@@ -1,0 +1,32 @@
+// Things we are gonna learn are -> Vector Implementation and performing Sort and Binary Search on it
+
+#include <bits/stdc++.h>
+using namespace std;
+
+int main()
+
+{
+    // Vector -> #include <vector>
+    vector<int> A = {22, 11, 33, 44};
+    // can be access like array
+    cout << A[1] << endl;
+
+    // we can use sort algo
+    sort(A.begin(), A.end()); // O(NlogN)
+
+    // we can use binary search as well
+    // O(logN)
+    //  (start point, end point, target element)
+
+    bool present = binary_search(A.begin(), A.end(), 100);
+    cout << present << endl;
+
+    // adding an element not found and then checking again
+    // for that pop function can be used
+
+    A.push_back(100);
+    present = binary_search(A.begin(), A.end(), 100);
+    cout << present << endl;
+
+    return 0;
+}
