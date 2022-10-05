@@ -10,7 +10,7 @@ weight[] = {4,5,1}
 Output: 3
 */
 
-# # Try yourself first
+/* Try yourself first */
 
 #include <bits/stdc++.h>
 using namespace std;
