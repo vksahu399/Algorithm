@@ -10,6 +10,7 @@ weight[] = {4,5,1}
 Output: 3
 */
 
+/* Try yourself first */
 
 #include <bits/stdc++.h>
 using namespace std;
@@ -68,3 +69,4 @@ int main()
     cout<<knapsack(w,wt,val,n)<<endl;
         
 }
+
