@@ -1,0 +1,107 @@
+class WordSearch:
+
+    def __init__(self, grid: list[list[str]]) -> None:
+        self.grid = grid
+        self.row = len(grid)
+        self.col = len(grid[0])
+
+    def search(self, word: list[str]) -> list[list[int]]:
+        l = len(word)
+        if l> self.row and l>self.col:
+            return -1
+        for r in range(self.row):
+            for c in range(self.col):
+                if self.grid[r][c] == word[0]:
+                    ts = self.straightSearch(word,r,c,l)
+                    if ts:
+                        return ts
+                    td = self.diagonalSearch(word,r,c,l)
+                    if td:
+                        return td
+        return -1
+
+    def listSearch(self, words: list[list[str]]) -> list[list]:
+        ind = []
+        for word in words:
+            index = self.search(word)
+            ind.append(["".join(word), index])
+        return ind
+
+    def straightSearch(self, word: list[str], r: int, c: int, l: int) -> list:
+        v = self.verticalCheck(r, l)
+        h = self.horizontalCheck(c, l)
+        if h == 1 or h == 0:
+            if self.grid[r][c:c+l] == word:
+                return [[r,c],[r,c+l-1]]
+        if h == -1 or h == 0:
+            if c-l == -1:
+                if self.grid[r][c::-1] == word:
+                    return [[r,c],[r,c-l+1]]
+            else:
+                if self.grid[r][c:c-l:-1] == word:
+                    return [[r,c],[r,c-l+1]]
+
+        if v == 1 or v == 0:
+            if [self.grid[r+i][c] for i in range(l)] == word:
+                return [[r,c],[r+l-1,c]]
+        if v == -1 or v == 0:
+            if [self.grid[r-i][c] for i in range(l)] == word:
+                return [[r,c],[r-l+1,c]]
+
+    def diagonalSearch(self, word: list[str], r: int, c: int, l: int) -> list:
+        ref = [[[[-1,-1]],                      [[-1,-1],[-1,+1]],                      [[-1,+1]]],
+               [[[-1,-1],[+1,-1]],        [[-1,-1],[-1,+1],[+1,-1],[+1,+1]],        [[-1,+1],[+1,+1]]],
+               [[[+1,-1]],                      [[+1,-1],[+1,+1]],                      [[+1,+1]]]]
+        v = self.verticalCheck(r, l)
+        h = self.horizontalCheck(c, l)
+        for x in ref[v+1][h+1]:
+            temp = []
+            tr, tc = r, c
+            a, b = x
+            for i in range(l):
+                temp.append(grid[tr][tc])
+                tr += a
+                tc += b
+            if temp == word:
+                return [[r,c],[tr,tc]]
+
+    def verticalCheck(self, r: int, l: int) -> int:
+        vstat = 0
+        if r+l <= self.row:
+            vstat += 1
+        if r-l  >= -1:
+            vstat += -1
+        return vstat
+
+    def horizontalCheck(self, c: int, l: int) -> int:
+        hstat = 0
+        if c+l <= self.col:
+            hstat += 1
+        if c-l  >= -1:
+            hstat += -1
+        return hstat
+
+
+
+
+
+
+if __name__ =="__main__": 
+    grid = []
+    words = []
+    # grid = [['a','a','c','a','a'],
+    #         ['a','d','a','a','a'],
+    #         ['t','o','b','a','t'],
+    #         ['a','g','a','a','a'],
+    #         ['a','t','a','a','a']]
+    # words = "cat bat dog"
+
+    n = int(input("Enter the grid size(n): "))
+    for i in range(n):
+        print(f"Enter Elements for row {i+1}")
+        grid.append(input().split())
+    print("Enter the Words to find:")
+    words = [list(i) for i in input().split()]
+    sol = WordSearch(grid).listSearch(words)
+    for i in sol:
+        print(i)
